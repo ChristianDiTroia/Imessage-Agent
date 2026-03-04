@@ -1,0 +1,8 @@
+# Python stuff
+.venv
+__pycache__
+*.pyc
+
+# Misc
+.env
+TODO.md
