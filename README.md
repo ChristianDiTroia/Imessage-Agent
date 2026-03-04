@@ -5,43 +5,44 @@ Lightweight FastAPI listener for BlueBubbles webhook events that forwards `/agen
 
 Quick start
 -----------
+
 1. Create and activate a Python virtual environment:
 
-```bash
-python3 -m venv .venv        # create
-source .venv/bin/activate    # activate
-```
+    ```bash
+    python3 -m venv .venv        # create
+    source .venv/bin/activate    # activate
+    ```
 
 2. Install dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 3. Create a `.env` file at the project root with these values (example):
 
-```env
-HOST_PORT=<app_server_port>        # defaults to 8000
+    ```env
+    HOST_PORT=<app_server_port>        # defaults to 8000
 
-BLUE_BUBBLES_HOST=<blue_bubbles_url>        # default http://localhost:1234
-BLUE_BUBBLES_PASSWORD=<blue_bubbles_server_password>
+    BLUE_BUBBLES_HOST=<blue_bubbles_url>        # default http://localhost:1234
+    BLUE_BUBBLES_PASSWORD=<blue_bubbles_server_password>
 
-OLLAMA_HOST=<ollama_url>        # default http://localhost:11434
-OLLAMA_MODEL=<ollama_model>     # defaults to qwen3:1.7b
+    OLLAMA_HOST=<ollama_url>        # default http://localhost:11434
+    OLLAMA_MODEL=<ollama_model>     # defaults to qwen3:1.7b
 
-# comma-separated list of chat Imessage GUIDs (phone#/email) permitted to trigger agent
-ALLOWED_CONTACTS=<your-email-or-phone>,<another-guid>
-```
+    # comma-separated list of chat Imessage GUIDs (phone#/email) permitted to trigger agent
+    ALLOWED_CONTACTS=<your-email-or-phone>,<another-guid>
+    ```
 
-3. Run the development server:
+4. Run the development server:
 
-```bash
-uvicorn app.main:app --reload --port 8000
-```
-
+    ```bash
+    uvicorn app.main:app --reload --port 8000
+    ```
 
 API
 ---
+
 - POST `/webhook` — accepts a JSON payload with schema matching `app.models.schemas.WebhookEvent`.
 
 Example payload:
