@@ -3,6 +3,7 @@ import os
 
 load_dotenv()
 
+HOST_ADDRESS = os.getenv("HOST_ADDRESS", "127.0.0.1")
 HOST_PORT = int(os.getenv("HOST_PORT", "8000"))
 
 BLUE_BUBBLES_HOST = os.getenv("BLUE_BUBBLES_SERVER_HOST", "http://localhost:1234")

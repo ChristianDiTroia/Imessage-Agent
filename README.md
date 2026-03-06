@@ -22,6 +22,7 @@ Quick start
 3. Create a `.env` file at the project root with these values (example):
 
     ```env
+    HOST_ADDRESS=<app_server_host>     # defaults to 127.0.0.1
     HOST_PORT=<app_server_port>        # defaults to 8000
 
     BLUE_BUBBLES_HOST=<blue_bubbles_url>        # default http://localhost:1234
@@ -32,6 +33,10 @@ Quick start
 
     # comma-separated list of chat Imessage GUIDs (phone#/email) permitted to trigger agent
     ALLOWED_CONTACTS=<your-email-or-phone>,<another-guid>
+
+    # Logging configuration
+    LOG_LEVEL=INFO                  # DEBUG, INFO, WARNING, ERROR, CRITICAL (defaults to INFO)
+    LOG_JSON=false                  # true for JSON output, false for readable plaintext
     ```
 
 4. Run the development server:

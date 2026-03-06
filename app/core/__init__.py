@@ -1,6 +1,7 @@
 """Core configuration package."""
 
 from .config import *
+from .logging import logger
 
 __all__ = [
     "HOST_PORT",
@@ -9,4 +10,5 @@ __all__ = [
     "OLLAMA_HOST",
     "OLLAMA_MODEL",
     "ALLOWED_CONTACTS",
+    logger,
 ]

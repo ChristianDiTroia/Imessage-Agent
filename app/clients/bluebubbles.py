@@ -2,7 +2,7 @@
 
 import uuid
 import requests
-from typing import Optional
+from app.core.logging import logger
 
 from app.core.config import BLUE_BUBBLES_HOST, BLUE_BUBBLES_PASSWORD
 
@@ -29,11 +29,11 @@ def send_message(chat_guid: str, text: str, method: str = "apple-script") -> Non
             json=data,
             params=params,
             headers={"Content-Type": "application/json"},
-            timeout=5,
+            timeout=3,
         )
         if response.status_code != 200:
-            print(
+            logger.warning(
                 f"Warning: send_message returned status {response.status_code} (body: {response.text!r})"
             )
     except requests.exceptions.RequestException as exc:
-        print(f"Error sending message to BlueBubbles: {exc}")
+        logger.error(f"Error sending message to BlueBubbles: {exc}")

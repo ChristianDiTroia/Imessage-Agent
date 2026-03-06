@@ -3,7 +3,7 @@ import sys
 from loguru import logger
 
 
-def configure_logging(json_format: bool = False):
+def _configure_logging(json_format: bool = False):
     """Configure Loguru for the application.
 
     Args:
@@ -39,4 +39,6 @@ def configure_logging(json_format: bool = False):
 
 
 # Export configured logger
-logger = configure_logging(json_format=os.getenv("LOG_JSON", "false").lower() == "true")
+logger = _configure_logging(
+    json_format=os.getenv("LOG_JSON", "false").lower() == "true"
+)

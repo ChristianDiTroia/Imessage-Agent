@@ -6,3 +6,4 @@ __pycache__
 # Misc
 .env
 TODO.md
+.vscode
