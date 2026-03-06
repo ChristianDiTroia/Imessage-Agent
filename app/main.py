@@ -12,4 +12,3 @@ if __name__ == "__main__":
 
     logger.info(f"Starting server at http://{HOST_ADDRESS}:{HOST_PORT}")
     uvicorn.run("app.main:app", host=HOST_ADDRESS, port=HOST_PORT, reload=True)
-    logger.info("Server stopped")

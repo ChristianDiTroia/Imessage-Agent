@@ -9,6 +9,9 @@ from app.core.config import ALLOWED_CONTACTS
 
 def handle_new_message(data: NewMessageData) -> Tuple[str, str]:
     """Validate and handle a new message. Returns (status, detail)."""
+
+    logger.info(f"Received new message data: {data}")
+
     if not data.chats:
         return ("error", "no chats")
 

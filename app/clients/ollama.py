@@ -1,7 +1,23 @@
 import ollama
 from typing import Optional
+import os
 
+from app.core.logging import logger
 from app.core.config import OLLAMA_HOST, OLLAMA_MODEL
+
+
+def _load_system_prompt() -> str:
+    prompt_path = os.path.join(
+        os.path.dirname(__file__), "..", "core", "system_prompt.md"
+    )
+    try:
+        with open(prompt_path, "r") as f:
+            return f.read()
+    except FileNotFoundError:
+        return (
+            "You are a helpful AI assistant chatting with Imessage users, "
+            "Keep responses concise and mobile-friendly/compatible."
+        )
 
 
 def _ensure_host():
@@ -9,17 +25,23 @@ def _ensure_host():
         ollama._client.base_url = OLLAMA_HOST
 
 
-def chat_with_ollama(
-    message: str, model: Optional[str] = None, timeout: int = 60
-) -> str:
-    """Send `message` to Ollama and return assistant text."""
+def chat_with_ollama(message: str, model: Optional[str] = None) -> str:
+    """Send `message` to Ollama with system prompt and return assistant text."""
     if model is None:
         model = OLLAMA_MODEL
 
     _ensure_host()
 
+    system_prompt = _load_system_prompt()
+
     try:
-        resp = ollama.chat(model=model, messages=[{"role": "user", "content": message}])
+        resp = ollama.chat(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": message},
+            ],
+        )
         if (
             resp
             and getattr(resp, "message", None)
@@ -28,4 +50,5 @@ def chat_with_ollama(
             return resp.message.content
         return str(resp)
     except Exception as e:
+        logger.error(f"Ollama chat error: {e}")
         raise RuntimeError(f"Ollama chat error: {e}")
