@@ -24,6 +24,8 @@ def _ensure_host():
         ollama._client.base_url = OLLAMA_HOST
 
 
+
+
 def chat_with_ollama(message: str, model: Optional[str] = None) -> str:
     """Send `message` to Ollama with system prompt and return assistant text."""
     if model is None:

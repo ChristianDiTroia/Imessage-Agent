@@ -7,30 +7,6 @@ from app.core.logging import logger
 from app.core.config import ALLOWED_CONTACTS
 
 
-def handle_new_message(data: NewMessageData) -> Tuple[str, str]:
-    """Validate and handle a new message. Returns (status, detail)."""
-
-    if not _meets_agent_trigger_criteria(data):
-        logger.info(
-            f"Ignoring message {data.text} from {data.handle.address}: does not meet trigger criteria"
-        )
-        return ("ignored", "does not meet agent trigger criteria")
-    
-    sender_address = data.handle.address.strip()
-    text = data.text.strip()[6:].strip()  # Remove "/agent" prefix
-
-    try:
-        logger.info(f"Sending chat message to Ollama from {sender_address}: {text}")
-        resp = chat_with_ollama(text)
-    except Exception as exc:
-        logger.error(f"Error communicating with Ollama: {exc}")
-        return ("error", str(exc))
-
-    logger.info(f"Sending response from Ollama to {sender_address}: {resp}")
-    send_message(sender_address, resp)
-    return ("ok", "message sent")
-
-
 def _meets_agent_trigger_criteria(data: NewMessageData) -> bool:
     """
     Check if the message meets criteria to trigger the agent.
@@ -52,3 +28,27 @@ def _meets_agent_trigger_criteria(data: NewMessageData) -> bool:
     agent_prefix = text.strip().lower().startswith("/agent")
 
     return (address_match or from_me) and agent_prefix
+
+
+def handle_new_message(data: NewMessageData) -> Tuple[str, str]:
+    """Validate and handle a new message. Returns (status, detail)."""
+
+    if not _meets_agent_trigger_criteria(data):
+        logger.info(
+            f"Ignoring message {data.text} from {data.handle.address}: does not meet trigger criteria"
+        )
+        return ("ignored", "does not meet agent trigger criteria")
+
+    sender_address = data.handle.address.strip()
+    text = data.text.strip()[6:].strip()  # Remove "/agent" prefix
+
+    try:
+        logger.info(f"Sending chat message to Ollama from {sender_address}: {text}")
+        resp = chat_with_ollama(text)
+    except Exception as exc:
+        logger.error(f"Error communicating with Ollama: {exc}")
+        return ("error", str(exc))
+
+    logger.info(f"Sending response from Ollama to {sender_address}: {resp}")
+    send_message(sender_address, resp)
+    return ("ok", "message sent")
