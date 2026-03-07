@@ -29,11 +29,12 @@ def send_message(chat_guid: str, text: str, method: str = "apple-script") -> Non
             json=data,
             params=params,
             headers={"Content-Type": "application/json"},
-            timeout=3,
+            timeout=2,
         )
         if response.status_code != 200:
             logger.warning(
                 f"Warning: send_message returned status {response.status_code} (body: {response.text!r})"
             )
     except requests.exceptions.RequestException as exc:
+        print(exc.errno)
         logger.error(f"Error sending message to BlueBubbles: {exc}")

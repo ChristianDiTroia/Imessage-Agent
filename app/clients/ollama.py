@@ -7,13 +7,12 @@ from app.core.config import OLLAMA_HOST, OLLAMA_MODEL
 
 
 def _load_system_prompt() -> str:
-    prompt_path = os.path.join(
-        os.path.dirname(__file__), "..", "core", "system_prompt.md"
-    )
+    prompt_path = os.path.join(os.path.dirname(__file__), "ollama_system_prompt.md")
     try:
         with open(prompt_path, "r") as f:
             return f.read()
     except FileNotFoundError:
+        logger.error(f"Failed to load system prompt: file not found at {prompt_path}")
         return (
             "You are a helpful AI assistant chatting with Imessage users, "
             "Keep responses concise and mobile-friendly/compatible."
