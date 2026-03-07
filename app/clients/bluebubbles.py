@@ -36,5 +36,10 @@ def send_message(chat_guid: str, text: str, method: str = "apple-script") -> Non
                 f"Warning: send_message returned status {response.status_code} (body: {response.text!r})"
             )
     except requests.exceptions.RequestException as exc:
-        print(exc.errno)
-        logger.error(f"Error sending message to BlueBubbles: {exc}")
+        if "read timed out" in str(exc).lower():
+            logger.warning(
+                f"Warning: send_message request timed out (message may have been sent): {exc}"
+            )
+        else:
+            logger.error(f"Error sending message to BlueBubbles: {exc}")
+            raise exc

@@ -40,11 +40,12 @@ def handle_new_message(data: NewMessageData) -> Tuple[str, str]:
         return ("ignored", "does not meet agent trigger criteria")
 
     sender_address = data.handle.address.strip()
-    text = data.text.strip()[6:].strip()  # Remove "/agent" prefix
+    chat_guid = data.chats[0].guid.strip()
+    text = f"{sender_address}: {data.text.strip()[6:].strip()}"  # Postfix addr and remove "/agent" prefix
 
     try:
         logger.info(f"Sending chat message to Ollama from {sender_address}: {text}")
-        resp = chat_with_ollama(text)
+        resp = chat_with_ollama(text, chat_guid)
     except Exception as exc:
         logger.error(f"Error communicating with Ollama: {exc}")
         return ("error", str(exc))

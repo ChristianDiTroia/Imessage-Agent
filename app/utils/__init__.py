@@ -1,3 +1,5 @@
 """Utility helpers for the app (reserved for future use)."""
 
-__all__ = []
+from .chat_context import *
+
+__all__ = ["ChatContext"]

@@ -39,6 +39,4 @@ def _configure_logging(json_format: bool = False):
 
 
 # Export configured logger
-logger = _configure_logging(
-    json_format=os.getenv("LOG_JSON", "false").lower() == "true"
-)
+logger = _configure_logging(json_format=bool(os.getenv("LOG_JSON", False)))

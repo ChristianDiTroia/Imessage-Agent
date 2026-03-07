@@ -28,8 +28,9 @@ Quick start
     BLUE_BUBBLES_HOST=<blue_bubbles_url>        # default http://localhost:1234
     BLUE_BUBBLES_PASSWORD=<blue_bubbles_server_password>
 
-    OLLAMA_HOST=<ollama_url>        # default http://localhost:11434
-    OLLAMA_MODEL=<ollama_model>     # defaults to qwen3:4b
+    OLLAMA_HOST=<ollama_url>         # default http://localhost:11434
+    OLLAMA_MODEL=<ollama_model>      # defaults to qwen3:4b
+    MODEL_CONTEXT_SIZE=<num tokens>  # defaults to 64k
 
     # comma-separated list of chat Imessage GUIDs (phone#/email) permitted to trigger agent
     ALLOWED_CONTACTS=<your-email-or-phone>,<another-guid>
