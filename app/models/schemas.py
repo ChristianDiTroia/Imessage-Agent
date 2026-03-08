@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 from pydantic import BaseModel
 
 
@@ -24,7 +24,7 @@ class NewMessageData(BaseModel):
     guid: str
     text: str
     attributedBody: Optional[str]
-    handle: Handle
+    handle: Optional[Handle] = None
     handleId: int
     otherHandle: int
     attachments: List[dict]

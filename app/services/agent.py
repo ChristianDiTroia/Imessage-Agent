@@ -18,12 +18,16 @@ def _meets_agent_trigger_criteria(data: NewMessageData) -> bool:
     """
 
     text = data.text.strip()
-    sender_address = data.handle.address.strip()
-
     if not text:
         return False
 
     from_me = bool(data.isFromMe)
+    if data.handle:
+        sender_address = data.handle.address.strip()
+    else:
+        # fallback for when handle isn't sent (in some group chat scenarios), use guid and strip the 'iMessage;-;' prefix if present
+        sender_address = data.chats[0].guid.strip()[11:]
+
     address_match = sender_address in ALLOWED_CONTACTS
     agent_prefix = text.strip().lower().startswith("/agent")
 
@@ -33,13 +37,18 @@ def _meets_agent_trigger_criteria(data: NewMessageData) -> bool:
 def handle_new_message(data: NewMessageData) -> Tuple[str, str]:
     """Validate and handle a new message. Returns (status, detail)."""
 
+    sender_address = (
+        data.chats[0].guid.strip()[11:]
+        if data.handle is None
+        else data.handle.address.strip()
+    )
+
     if not _meets_agent_trigger_criteria(data):
         logger.info(
-            f"Ignoring message {data.text} from {data.handle.address}: does not meet trigger criteria"
+            f"Ignoring message {data.text} from {sender_address}: does not meet trigger criteria"
         )
         return ("ignored", "does not meet agent trigger criteria")
 
-    sender_address = data.handle.address.strip()
     chat_guid = data.chats[0].guid.strip()
     text = f"{sender_address}: {data.text.strip()[6:].strip()}"  # Postfix addr and remove "/agent" prefix
 
@@ -50,6 +59,6 @@ def handle_new_message(data: NewMessageData) -> Tuple[str, str]:
         logger.error(f"Error communicating with Ollama: {exc}")
         return ("error", str(exc))
 
-    logger.info(f"Sending response from Ollama to {sender_address}: {resp}")
-    send_message(sender_address, resp)
+    logger.info(f"Sending response from Ollama to {chat_guid}: {resp}")
+    send_message(chat_guid, resp)
     return ("ok", "message sent")
