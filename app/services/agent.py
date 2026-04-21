@@ -37,7 +37,7 @@ def _meets_agent_trigger_criteria(data: NewMessageData) -> bool:
     return (address_match or from_me) and agent_prefix
 
 
-# Recent messages (timestamp, sender_address, text) used to suppress duplicate
+# Recent messages (timestamp, sender_address, text) used to suppress duplicate messages when chatting with own imsg acct
 # arrivals within a short window. Protect with a lock for thread-safety.
 _RECENT_WINDOW = 3.0  # seconds
 _recent_messages = deque()  # type: deque[tuple[float, str, str]]
